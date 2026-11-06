@@ -1,0 +1,19 @@
+package net.asere.heightwander.server.account.presentation.api.model
+
+import kotlinx.serialization.Serializable
+import net.asere.omni.ktor.Response
+import net.asere.heightwander.server.account.domain.model.mappable.EmailNotVerifiedError
+import net.asere.heightwander.server.account.presentation.api.AccountResponse
+import net.asere.heightwander.server.shared.core.presentation.api.model.error.ApiError
+
+@Serializable
+class EmailNotVerifiedApiError :
+    ApiError(
+        code = "EmailNotVerified",
+    ),
+    AccountResponse
+
+fun EmailNotVerifiedError.toResponse() = Response<AccountResponse>(
+    code = 403,
+    body = EmailNotVerifiedApiError(),
+)

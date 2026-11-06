@@ -7,8 +7,14 @@ import com.mongodb.client.MongoClient
 import com.mongodb.client.MongoClients
 import com.mongodb.client.MongoCollection
 import com.mongodb.client.MongoDatabase
+import com.mongodb.client.model.IndexModel
+import com.mongodb.client.model.IndexOptions
+import com.mongodb.client.model.Indexes
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import net.asere.heightwander.server.account.data.datasource.database.RecoveryCodeBson
+import net.asere.heightwander.server.account.data.datasource.database.UserBson
+import net.asere.heightwander.server.account.data.datasource.database.VerificationCodeBson
 import net.asere.heightwander.server.shared.core.data.database.Database
 import net.asere.heightwander.server.shared.core.domain.environment.Environment
 import net.asere.heightwander.server.shared.core.domain.tools.Logger
@@ -54,8 +60,38 @@ class MongodbDatabase(
     }
 
     private fun createIndexes() {
-        // Indexes are registered per feature module as they are added.
-        logger.info("No feature indexes registered yet.")
+        logger.info("Creating account indexes...")
+        val background = IndexOptions().background(true)
+
+        collection("users", UserBson::class.java).apply {
+            createIndexes(
+                listOf(
+                    IndexModel(Indexes.ascending("email"), IndexOptions().unique(true).background(true)),
+                    IndexModel(Indexes.ascending("name"), IndexOptions().unique(true).background(true)),
+                    IndexModel(
+                        Indexes.ascending("externalId"),
+                        IndexOptions().unique(true).sparse(true).background(true),
+                    ),
+                ),
+            )
+        }
+        collection("verification_codes", VerificationCodeBson::class.java).apply {
+            createIndexes(
+                listOf(
+                    IndexModel(Indexes.ascending("value"), IndexOptions().unique(true).background(true)),
+                    IndexModel(Indexes.ascending("userId"), background),
+                ),
+            )
+        }
+        collection("recovery_codes", RecoveryCodeBson::class.java).apply {
+            createIndexes(
+                listOf(
+                    IndexModel(Indexes.ascending("value"), IndexOptions().unique(true).background(true)),
+                    IndexModel(Indexes.ascending("userId"), background),
+                ),
+            )
+        }
+        logger.info("Creating account indexes... done")
     }
 
     fun <T> collection(

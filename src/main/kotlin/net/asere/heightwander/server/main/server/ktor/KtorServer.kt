@@ -4,6 +4,7 @@ import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.install
+import io.ktor.server.auth.Authentication
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 import io.ktor.server.plugins.compression.Compression
@@ -11,7 +12,12 @@ import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.plugins.cors.routing.CORS
 import io.ktor.server.plugins.statuspages.StatusPages
 import io.ktor.server.response.respond
+import io.ktor.server.application.RouteScopedPlugin
+import net.asere.heightwander.server.account.presentation.api.USER_DATA_PLUGIN_NAME
+import net.asere.heightwander.server.account.presentation.api.authRoutes
+import net.asere.heightwander.server.account.presentation.api.installAuthRateLimit
 import net.asere.heightwander.server.main.server.Server
+import net.asere.heightwander.server.main.server.ktor.auth.loggedProvider
 import net.asere.heightwander.server.main.server.ktor.health.healthRoutes
 import net.asere.heightwander.server.shared.core.domain.environment.Environment
 import net.asere.heightwander.server.shared.core.domain.model.error.BadRequestError
@@ -25,11 +31,13 @@ import net.asere.heightwander.server.shared.core.presentation.api.model.error.Un
 import net.asere.heightwander.server.shared.core.presentation.api.model.error.toApi
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import org.koin.core.qualifier.named
 
 class KtorServer :
     Server,
     KoinComponent {
     private val appEnvironment: Environment by inject()
+    private val userDataPlugin: RouteScopedPlugin<Unit> by inject(named(USER_DATA_PLUGIN_NAME))
 
     override fun start(port: Int) {
         embeddedServer(Netty, port = port) {
@@ -53,6 +61,10 @@ class KtorServer :
                     call.respond(HttpStatusCode.InternalServerError, UnknownApiError())
                 }
             }
+            installAuthRateLimit()
+            install(Authentication) {
+                loggedProvider()
+            }
             install(CORS) {
                 if (appEnvironment.isDebug()) {
                     anyHost()
@@ -68,6 +80,8 @@ class KtorServer :
                 allowMethod(HttpMethod.Delete)
             }
             install(Compression)
+            install(userDataPlugin)
+            authRoutes(this)
             healthRoutes(this)
         }.start(wait = true)
     }

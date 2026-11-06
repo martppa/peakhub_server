@@ -10,6 +10,8 @@ import net.asere.heightwander.server.shared.core.data.database.DatabaseComposabl
 import net.asere.heightwander.server.shared.core.data.database.mongodb.MongodbDatabase
 import net.asere.heightwander.server.shared.core.data.environment.EnvironmentData
 import net.asere.heightwander.server.shared.core.domain.environment.Environment
+import net.asere.heightwander.server.shared.core.domain.service.EmailService
+import net.asere.heightwander.server.shared.core.domain.service.NoOpEmailService
 import net.asere.heightwander.server.shared.core.domain.tools.Logger
 import net.asere.heightwander.server.shared.core.presentation.api.error.ExceptionHandler
 import net.asere.heightwander.server.shared.core.presentation.api.error.ExceptionHandlerComposite
@@ -22,6 +24,7 @@ val mainModule =
     module {
         single<Environment> { EnvironmentData() }
         single { ConsoleLogger(get()) } bind Logger::class
+        single { NoOpEmailService(get()) } bind EmailService::class
         single {
             ExceptionHandlerComposite(
                 listOf(

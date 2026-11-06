@@ -1,8 +1,10 @@
 package net.asere.heightwander.server.main
 
 import kotlinx.coroutines.runBlocking
+import net.asere.heightwander.server.account.di.accountModule
 import net.asere.heightwander.server.main.di.mainModule
 import net.asere.heightwander.server.main.server.Server
+import net.asere.heightwander.server.profile.di.profileModule
 import net.asere.heightwander.server.shared.core.data.database.Database
 import net.asere.heightwander.server.shared.core.domain.environment.Environment
 import org.koin.core.component.KoinComponent
@@ -16,7 +18,11 @@ class Program : KoinComponent {
 
     private fun initializeDi() {
         startKoin {
-            modules(mainModule)
+            modules(
+                mainModule,
+                profileModule,
+                accountModule,
+            )
         }
     }
 

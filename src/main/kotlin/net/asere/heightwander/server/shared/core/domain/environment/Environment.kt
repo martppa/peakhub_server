@@ -8,4 +8,14 @@ interface Environment {
     fun getServerPort(): Int
 
     fun isDebug(): Boolean
+
+    fun getJwtTokenKey(): String
+
+    fun getGoogleClientId(): String
+
+    fun getAppleClientId(): String
+
+    fun isPublicAccessEnabled(): Boolean
+
+    fun getWebHost(): String
 }
