@@ -1,8 +1,8 @@
-# PeakHub Server
+# Heightwander Server
 
-Backend API de PeakHub (Kotlin / Ktor / Koin / Mongo). Esqueleto inspirado en
-`trailhub_server`: arranque `Main` → `Program` → `KtorServer`, sin módulos de
-dominio aún.
+Backend API de Heightwander (Kotlin / Ktor / Koin / Mongo). Repo/codename:
+`peakhub_server`. Esqueleto inspirado en `trailhub_server`: arranque
+`Main` → `Program` → `KtorServer`, sin módulos de dominio aún.
 
 ## Requisitos
 
@@ -22,7 +22,7 @@ export $(grep -v '^#' .env | xargs)
 
 ```bash
 ./gradlew shadowJar
-# artefacto: build/libs/PeakHubServer.jar
+# artefacto: build/libs/HeightwanderServer.jar
 ```
 
 ## Layout
@@ -30,7 +30,7 @@ export $(grep -v '^#' .env | xargs)
 ```text
 src/main/kotlin/
   Main.kt
-  net/asere/peakhub/server/
+  net/asere/heightwander/server/
     main/           # Program, DI, KtorServer, health
     shared/core/    # Environment, Mongo, errors, Logger
 ```

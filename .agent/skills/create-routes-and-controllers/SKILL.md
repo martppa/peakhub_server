@@ -10,7 +10,7 @@ description: >-
 
 ## 1. Controller
 
-- **Location**: `src/main/kotlin/net/asere/peakhub/server/<module>/presentation/api/<Name>Controller.kt`
+- **Location**: `src/main/kotlin/net/asere/heightwander/server/<module>/presentation/api/<Name>Controller.kt`
 - Inject use cases via constructor.
 - Each public method maps to one endpoint.
 - Map domain → API models with `asApi()` before returning.

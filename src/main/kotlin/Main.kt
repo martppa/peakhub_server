@@ -1,3 +1,3 @@
-import net.asere.peakhub.server.main.Program
+import net.asere.heightwander.server.main.Program
 
 fun main() = Program().run()

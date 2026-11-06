@@ -9,7 +9,7 @@ description: >-
 
 ## 1. Service interface in `shared`
 
-`net.asere.peakhub.server.shared.<module>.domain.XxxService`
+`net.asere.heightwander.server.shared.<module>.domain.XxxService`
 
 ```kotlin
 interface PeakService {
@@ -24,7 +24,7 @@ Lean DTOs under `shared/<module>/domain/model/` with `Shared` suffix
 
 ## 3. Proxy in the owning module
 
-`net.asere.peakhub.server.<module>.domain.XxxProxy` implements the service,
+`net.asere.heightwander.server.<module>.domain.XxxProxy` implements the service,
 delegates to use cases, maps domain ↔ shared. No business logic in the proxy.
 
 ## 4. DI
