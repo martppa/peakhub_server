@@ -1,0 +1,30 @@
+### Java ###
+*.class
+*.ctxt
+.mtj.tmp/
+*.jar
+*.war
+*.ear
+.vscode
+hs_err_pid*
+
+### Gradle ###
+.gradle
+/build/
+/bin/
+/libs/
+/resources/
+.gradletasknamecache
+!gradle-wrapper.jar
+
+local.properties
+
+.env
+.env.*
+!.env.example
+*.tar.gz
+credentials*
+**/service-account*.json
+
+.idea/
+.DS_Store

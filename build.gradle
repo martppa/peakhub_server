@@ -1,0 +1,67 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '2.0.0'
+    id 'application'
+    id 'org.jetbrains.kotlin.plugin.serialization' version '2.0.0'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
+    id 'org.jlleitschuh.gradle.ktlint' version '14.2.0'
+}
+
+group = 'net.asere.peakhub.server'
+version = '0.0.1'
+
+repositories {
+    mavenCentral()
+}
+
+ktlint {
+    android.set(false)
+    verbose.set(true)
+    filter {
+        exclude("**/generated/**")
+        exclude("**/build/**")
+    }
+}
+
+kotlin {
+    jvmToolchain(17)
+}
+
+application {
+    mainClass.set('MainKt')
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'MainKt'
+    }
+}
+
+shadowJar {
+    archiveBaseName.set('PeakHubServer')
+    archiveClassifier.set('')
+    archiveVersion.set('')
+    zip64 = true
+}
+
+dependencies {
+    implementation "io.insert-koin:koin-core:4.0.0"
+    implementation "io.ktor:ktor-server-core:3.0.3"
+    implementation "io.ktor:ktor-server-netty:3.0.3"
+    implementation "io.ktor:ktor-server-status-pages:3.0.3"
+    implementation "io.ktor:ktor-server-content-negotiation:3.0.3"
+    implementation "io.ktor:ktor-serialization-kotlinx-json:3.0.3"
+    implementation "io.ktor:ktor-server-compression:3.0.3"
+    implementation "io.ktor:ktor-server-cors:3.0.3"
+    implementation 'org.mongodb:mongodb-driver-sync:5.1.2'
+    implementation 'org.slf4j:slf4j-simple:2.0.13'
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.1"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0"
+
+    testImplementation 'org.jetbrains.kotlin:kotlin-test'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.11.0-M1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.11.0-M1'
+}
+
+test {
+    useJUnitPlatform()
+}
